@@ -9,7 +9,7 @@ function fetchData(lat, lng, date) {
 	if (lat == undefined || lng == undefined)
 		throw new Error(`invalid lat/lng params passed to fetchData(${lat}, ${lng}, ...)`)
 	if (date == undefined) date = new Date()
-	const url = `http://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}`
+	const url = `http://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&formatted=0`
 	return new Promise((resolve, reject) => {
 		http.get(url, res => {
 			console.log(`${res.statusCode}|${url}`)
