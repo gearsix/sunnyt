@@ -1,0 +1,11 @@
+{
+  "name": "ssrt",
+  "version": "1.0.0",
+  "description": "Fetching & parsing Sunset & Sunrise times from sunset-sunrise.org",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alex Collins",
+  "license": "WTFPL"
+}
