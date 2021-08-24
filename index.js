@@ -10,12 +10,10 @@ var reqs = []
 for (let i = 0; i < nReqs; i++) {
 	let lat = (Math.random() * rngLat) - maxLat
 	let lng = (Math.random() * rngLng) - maxLng
-	reqs.push(fetchData(lat, lng).catch((err) => {
-		console.warn(err)
-	}))
+	reqs.push(fetchData(lat, lng).catch(console.warn))
 }
 
-makeRequests(reqs).then((dataset) => {
+makeRequests(reqs, (dataset) => {
 	if (dataset.length > 0) {
 		let earliest = 0
 		for (let i = 1; i < dataset.length; i++) {
@@ -56,12 +54,15 @@ function fetchData(lat, lng, date) {
 	})
 }
 
-async function makeRequests(requests) {
-	const maxActive = 5
-	var dataset = []
-	for (let i = 0; i < maxActive; i += maxActive) {
-		data = await Promise.all(reqs.slice(i, i + maxActive)).catch(console.error)
-		dataset.concat(data)
-	}
-	return dataset
+function makeRequests(requests, callback) {
+	return new Promise(async (resolve) => {
+		const maxActive = 5
+		var dataset = []
+		for (let i = 0; i < requests.length; i += maxActive) {
+			let j = (i + maxActive > requests.length) ? requests.length : i + maxActive
+			let data = await Promise.all(requests.slice(i, j)).catch(console.error)
+			for (d in data) dataset.push(data[d])
+		}
+		callback(dataset)
+	})
 }
