@@ -16,8 +16,10 @@ for (let i = 0; i < nReqs; i++) {
 makeRequests(reqs, (dataset) => {
 	if (dataset.length > 0) {
 		let earliest = 0
-		for (let i = 1; i < dataset.length; i++) {
-			if (Date.parse(dataset[earliest].sunrise) < Date.parse(dataset[i].sunrise))
+		console.log('SUNRISE TIMES')
+		for (let i = 0; i < dataset.length; i++) {
+			console.log(`\t${i} = ${dataset[i].sunrise}`)
+			if (Date.parse(dataset[earliest].sunrise) > Date.parse(dataset[i].sunrise))
 				earliest = i
 		}
 		console.log(`EARLIEST ${earliest}
@@ -50,7 +52,7 @@ function fetchData(lat, lng, date) {
 					reject(err)
 				}
 			})
-		}).on('error', (err) => { reject(Error(`${url}\nfailed ${err.message}`)) }).end()
+		}).on('error', (err) => { reject(Error(`${url}\nfailed ${err.message}`)) })
 	})
 }
 
@@ -62,6 +64,7 @@ function makeRequests(requests, callback) {
 			let j = (i + maxActive > requests.length) ? requests.length : i + maxActive
 			let data = await Promise.all(requests.slice(i, j)).catch(console.error)
 			for (d in data) dataset.push(data[d])
+			console.log('')
 		}
 		callback(dataset)
 	})
