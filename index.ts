@@ -1,6 +1,3 @@
-/**
- * TODO
-**/
 import { Config, SunsetSunrise } from './ssrt'
 
 const cfg: Config = require('./config.json')
@@ -12,7 +9,7 @@ requestData(cfg, initDataset(cfg)).then((dataset: SunsetSunrise[]) => {
 	}
 
 	console.log('SUNRISE TIMES')
-	let earliest = 0
+	let earliest = -1
 	for (let i = 0; i < dataset.length; i++) {
 		if (dataset[i].data.sunrise.getFullYear() == 1970) {
 			console.log(`\t${i} = ${dataset[i].data.sunrise} - void date`)
@@ -20,12 +17,18 @@ requestData(cfg, initDataset(cfg)).then((dataset: SunsetSunrise[]) => {
 		} else {
 			console.log(`\t${i} = ${dataset[i].data.sunrise}`)
 		}
+		if (earliest === -1)
+			earliest = i
 		if (dataset[earliest].data.sunrise > dataset[i].data.sunrise)
 			earliest = i
 	}
-	console.log(`EARLIEST ${earliest}
+	if (earliest === -1)
+		console.log("not enough valid data retrieved")
+	else {
+		console.log(`EARLIEST ${earliest}
 	sunrise: ${dataset[earliest].data.sunrise}
 	day length: ${dataset[earliest].data.dayLength}`)
+	}
 })
 
 function initDataset(cfg: Config): SunsetSunrise[] {

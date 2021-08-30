@@ -1,6 +1,3 @@
-/**
- * TODO
-**/
 import { get } from 'http'
 
 const maxLat: number = 90
