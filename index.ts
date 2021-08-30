@@ -14,13 +14,18 @@ requestData(cfg, initDataset(cfg)).then((dataset: SunsetSunrise[]) => {
 	console.log('SUNRISE TIMES')
 	let earliest = 0
 	for (let i = 0; i < dataset.length; i++) {
-		console.log(`\t${i} = ${dataset[i].data.sunrise}`)
+		if (dataset[i].data.sunrise.getFullYear() == 1970) {
+			console.log(`\t${i} = ${dataset[i].data.sunrise} - void date`)
+			continue
+		} else {
+			console.log(`\t${i} = ${dataset[i].data.sunrise}`)
+		}
 		if (dataset[earliest].data.sunrise > dataset[i].data.sunrise)
 			earliest = i
 	}
 	console.log(`EARLIEST ${earliest}
 	sunrise: ${dataset[earliest].data.sunrise}
-	day length: ${dataset[earliest].data.dayLength.toTimeString()}`)
+	day length: ${dataset[earliest].data.dayLength}`)
 })
 
 function initDataset(cfg: Config): SunsetSunrise[] {

@@ -12,14 +12,14 @@ function generateLatitude(min? :number, max? :number): number {
 	if (!min) min = minLat
 	if (!max) max = maxLat
 	let rngLat = max - min
-	return (Math.random() * rngLat) - maxLat
+	return parseFloat(((Math.random() * rngLat) - maxLat).toPrecision(8))
 }
 
 function generateLongitude(min? :number, max? :number): number {
 	if (!min) min = minLng
 	if (!max) max = maxLng
 	let rngLng = max - min
-	return (Math.random() * rngLng) - maxLng
+	return parseFloat(((Math.random() * rngLng) - maxLng).toPrecision(8))
 }
 
 export interface Config {
