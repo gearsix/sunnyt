@@ -13,6 +13,7 @@ sunrise.
 Usage
 -----
 
+- `npm install` - install dependencies
 - `npm start` - build & run the tool
 - `npm build` - build the tool
 - `npm run` - skip building the tool and just run it.
@@ -40,9 +41,12 @@ When this happens their API returns epoch, which this tool will just ignore.
 Future
 ------
 
-- (should) Implement reverse geocoding to get the name of the location for the coordinates generated:
+- _should_ allow user to set coordinates and date parameters for requests
+- _could_ Implement reverse geocoding to get the name of the location for the coordinates generated:
 [Google Reverse Geocoding](https://developers.google.com/maps/documentation/javascript/geocoding#ReverseGeocoding)
-- (could) Add a web interface to let users pick coordinates using a map.
+- _could_ Add a web interface
+  - An interactive map to allow users to select coordinates
+- _could_  Output useful data in a tidy .html file using a templating language like [mustache](https://mustache.github.io/)
 
 Authors
 -------
