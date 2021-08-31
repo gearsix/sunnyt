@@ -1,4 +1,4 @@
-import { Config, SunsetSunrise } from './ssrt'
+import { Config, SunsetSunrise } from './sunnyt'
 
 const cfg: Config = require('./config.json')
 

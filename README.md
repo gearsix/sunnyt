@@ -1,8 +1,6 @@
 
-ssrt
-====
-
-_Sun Set & Rise Times_
+sunnyt
+======
 
 A simple tool to that generates a set of coordinates and makes requests to
 [sunrise-sunset.org](https://sunrise-sunset.org/) to fetch data about those
