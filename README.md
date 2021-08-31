@@ -15,9 +15,6 @@ Usage
 
 - `npm install` - install dependencies
 - `npm start` - build & run the tool
-- `npm build` - build the tool
-- `npm run` - skip building the tool and just run it.
-This will fail if the tool hasn't already been built.
 
 Configuration
 -------------

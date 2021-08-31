@@ -4,9 +4,7 @@
   "description": "Fetching & parsing Sunset & Sunrise times from sunset-sunrise.org",
   "main": "index.js",
   "scripts": {
-    "start": "npx tsc *ts && node index.js",
-    "build": "npx tsc *ts",
-    "run": "node index.js"
+    "start": "npx tsc *ts && node index.js"
   },
   "author": "Alex Collins",
   "license": "MIT",

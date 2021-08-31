@@ -66,6 +66,7 @@ export class SunriseSunset {
 		this.lat = (!lat) ? generateLatitude() : lat
 		this.lng = (!lng) ? generateLongitude() : lng
 		this.date = (!date) ? new Date() : date
+		this.data = undefined
 	}
 
 	/**
@@ -81,6 +82,7 @@ export class SunriseSunset {
 				if (res.statusCode !== 200)
 					reject(new Error(`invalid http response ${res.statusCode} from ${url}`))
 				let chunks = []
+				res.on('error', (err) => { reject(err) })
 				res.on('data', (c) => { chunks.push(c) })
 				res.on('end', () => {
 					try {
@@ -101,20 +103,18 @@ export class SunriseSunset {
 						}
 						console.log(`${data.status}|${url}`)
 						resolve()
-					} catch(err) {
-						reject(err)
-					}
-				}).on('error', (err) => { reject(new Error(`${url}\nfailed ${err.message}`)) })
+					} catch(err) { reject(err) }
+				}).on('error', (err) => { reject(err) })
 			})
 		})
 	}
 
 	latString() {
-		return this.lat.toString().padStart(10)
+		return this.lat.toString().padStart(11)
 	}
 
 	lngString() {
-		return this.lng.toString().padStart(10)
+		return this.lng.toString().padStart(11)
 	}
 }
 

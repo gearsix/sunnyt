@@ -13,10 +13,14 @@ requestData(cfg, initDataset(cfg)).then((dataset: SunriseSunset[]) => {
 	}
 
 	console.log('SUNRISE TIMES')
-	console.log(`\t   | ${('latitude').padEnd(9)}| ${('longitude').padEnd(9)} | sunrise`)
+	console.log(`\t id| ${('latitude').padEnd(10)}| ${('longitude').padEnd(10)} | sunrise`)
 	let earliest = -1, voidDates = 0
 	for (let i = 0; i < dataset.length; i++) {
 		let d = dataset[i]
+		if (d.data === undefined) {
+			console.log(`\t${i.toString().padStart(3)}| data undefined, skipping`)
+			continue
+		}
 		let dstr = `${i.toString().padStart(3)}|${d.latString()},${d.lngString()} = ${d.data.sunrise}`
 		if (d.data.sunrise.getFullYear() == 1970) {
 			console.log(`\t${dstr} - void date`)
@@ -33,11 +37,11 @@ requestData(cfg, initDataset(cfg)).then((dataset: SunriseSunset[]) => {
 	if (voidDates > 0)
 		console.log('\n"void date" = coordinates in a location not supported by sunrise-sunset.org, results ignore\n')
 	if (earliest === -1)
-		console.error("not enough valid data retrieved")
+		console.error("\nnot enough valid data retrieved, aborting")
 	else {
 		let e = dataset[earliest]
 		console.log(`EARLIEST ${earliest}`)
-		console.log(`\tcoordinates: ${e.latString()},${e.lngString()}`)
+		console.log(`\tcoordinates: ${e.lat},${e.lng}`)
 		console.log(`\tsunrise:     ${e.data.sunrise}`)
 		console.log(`\tday length:  ${e.data.dayLength}`)
 	}
@@ -70,11 +74,10 @@ function requestData(cfg: Config, dataset: SunriseSunset[]): Promise<SunriseSuns
 			
 			let reqs: Promise<void>[] = []
 			for (let r = i; r < j; r++)
-				reqs.push(dataset[r].requestData())
+				reqs.push(dataset[r].requestData().catch((err) => { console.error(err) })
 
 			console.log(`${i+cfg.requestLimit}/${dataset.length} requests...`)
-			await Promise.all(reqs).catch(console.error)
-			console.log('')
+			await Promise.all(reqs)
 		}
 		resolve(dataset)
 	})
