@@ -5,6 +5,10 @@ const minLat: number = -90
 const maxLng: number = 180
 const minLng: number = -180
 
+/**
+ * Generate a number inbetween `min` & `max`. If `min` or `max` are
+ * undefined, then `minLat` and `maxLat` will be used respectively.
+**/
 function generateLatitude(min? :number, max? :number): number {
 	if (!min) min = minLat
 	if (!max) max = maxLat
@@ -12,6 +16,10 @@ function generateLatitude(min? :number, max? :number): number {
 	return parseFloat(((Math.random() * rngLat) - maxLat).toPrecision(8))
 }
 
+/**
+ * Generate a number inbetween `min` & `max`. If `min` or `max` are
+ * undefined, then `minLng` and `maxLng` will be used respectively.
+**/
 function generateLongitude(min? :number, max? :number): number {
 	if (!min) min = minLng
 	if (!max) max = maxLng
@@ -19,12 +27,18 @@ function generateLongitude(min? :number, max? :number): number {
 	return parseFloat(((Math.random() * rngLng) - maxLng).toPrecision(8))
 }
 
+/**
+ * Available options in this tools configuration.
+**/
 export interface Config {
 	datasetSize: number
 	requestLimit: number
-	verbose: boolean
 }
 
+/**
+ * SunriseSunsetData contains all results data returned by sunrise-sunset.org.
+ * See sunrise-sunset.org/api for details.
+**/
 export interface SunriseSunsetData {
     sunrise                   : Date,
     sunset                    : Date,
@@ -38,7 +52,11 @@ export interface SunriseSunsetData {
     astronomicalTwilightEnd   : Date
 }
 
-export class SunsetSunrise {
+/**
+ * SunriseSunset is the main class for this tool. It contians the request method
+ * and all the data required to make a request to sunrise-sunset.org.
+**/
+export class SunriseSunset {
     readonly lat: number
     readonly lng: number 
     readonly date: Date
@@ -50,6 +68,12 @@ export class SunsetSunrise {
 		this.date = (!date) ? new Date() : date
 	}
 
+	/**
+	 * requestData returns the `Promise` of a `get` (from NodeJS' `http`). This request will be to
+	 * `api.sunrise-sunset.org/...` and it's returned will be parsed and written to `this.data` for
+	 * later access.
+	 * WARNING: This will overwrite any currently existing data in `this.data`.
+	**/
 	requestData(): Promise<void> {
 		const url = `http://api.sunrise-sunset.org/json?lat=${this.lat}&lng=${this.lng}&formatted=0`
 		return new Promise<void>((resolve, reject) => {
@@ -83,6 +107,14 @@ export class SunsetSunrise {
 				}).on('error', (err) => { reject(new Error(`${url}\nfailed ${err.message}`)) })
 			})
 		})
+	}
+
+	latString() {
+		return this.lat.toString().padStart(10)
+	}
+
+	lngString() {
+		return this.lng.toString().padStart(10)
 	}
 }
 
