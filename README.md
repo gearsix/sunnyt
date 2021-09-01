@@ -31,6 +31,7 @@ another IP to make future requests.
 Notes
 -----
 
+- Generally with the datasetSize set to 100 it returns somewhere in east Russia, which has a sunrise at 5-6pm (Greenwich Mean Time)
 - **Results have "void date"?** - This happens when generated coordinates are not in one of the countries [supported by SunriseSunset](https://sunrise-sunset.org/explore).
 When this happens their API returns epoch, which this tool will just ignore.
 - This was my first project using Typescript, let me know if I'm doing anything weird.
@@ -38,6 +39,7 @@ When this happens their API returns epoch, which this tool will just ignore.
 Future
 ------
 
+- _should_ add a config option to write results to a .csv file or something
 - _should_ allow user to set coordinates and date parameters for requests
 - _could_ Implement reverse geocoding to get the name of the location for the coordinates generated:
 [Google Reverse Geocoding](https://developers.google.com/maps/documentation/javascript/geocoding#ReverseGeocoding)
