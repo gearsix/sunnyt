@@ -12,12 +12,15 @@ const cfg: Config = require('./config.json')
 const outfile: string = './sunnyt.html'
 const template: string = './output.mst'
 
+/**
+ * main runtime, call `renderTemplate` and create a HTTP server on
+ * port 8000 serving the HTML output
+**/
 try {
-  readFile(template, (err, mst) => {
+  readFile(template, async (err, mst) => {
     if (err) throw err
-    const mstString = mst.toString()
+    const html = await renderTemplate(mst.toString())
     const server = createServer(async (request, response) => {
-      let html = await renderTemplate(mstString)
       response.writeHead(200, { "Content-Type": "text/html" })
       response.write(html)
       response.end()
@@ -28,6 +31,7 @@ try {
 } catch (err) {
   console.error(err)
 }
+
 /**
  * Generate a dataset (using `initDataset()` and `requestData()`).
  * Then format that data to be used with `render` against the `template` file.

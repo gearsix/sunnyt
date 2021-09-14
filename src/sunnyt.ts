@@ -78,18 +78,24 @@ export class SunriseSunset {
   requestData(): Promise<void> {
     let dateFmt = `${this.date.getFullYear()}-${this.date.getMonth()+1}-${this.date.getDate()}`
     const url = `http://api.sunrise-sunset.org/json?lat=${this.lat}&lng=${this.lng}&date=${dateFmt}&formatted=0`
-    return new Promise<void>((resolve, reject) => {
-      get(url, res => {
-        if (res.statusCode !== 200)
-          reject(new Error(`invalid http response ${res.statusCode} from ${url}`))
-        let chunks = []
-        res.on('error', (err) => { reject(err) })
-        res.on('data', (c) => { chunks.push(c) })
-        res.on('end', () => {
-          try {
-            let data = JSON.parse(Buffer.concat(chunks).toString())
+    
+    const handleResponse = new Promise<void>((resolve, reject) => {
+      get(url, (response) => {
+        if (response.statusCode !== 200)
+          reject(new Error(`invalid response ${response.statusCode} from ${url}`))
+        
+        let responseData = []
+        response.on('data', (chunk) => { responseData.push(chunk) })
+
+        response.on('error', (err) => { reject(err) })
+
+        response.on('end', () => {
+          try { // JSON.parse might throw if data is malformed
+            let data = JSON.parse(Buffer.concat(responseData).toString())
+            
             if (data.status !== "OK")
               reject(new Error(`invalid status ${data.status} from ${url}`))
+
             this.data = {
               sunrise                   : new Date(data.results.sunrise),
               sunset                    : new Date(data.results.sunset),
@@ -102,23 +108,16 @@ export class SunriseSunset {
               astronomicalTwilightBegin : new Date(data.results.astronomical_twilight_begin),
               astronomicalTwilightEnd   : new Date(data.results.astronomical_twilight_end)
             }
+
             resolve()
-          } catch(err) { reject(err) }
-        }).on('error', (err) => { reject(err) })
-      })
+          } catch(err) {
+            reject(err)
+          }
+        })
+      }).on('error', (err) => reject(err))
     })
-  }
 
-  latString() {
-    return this.lat.toString().padStart(12)
-  }
-
-  lngString() {
-    return this.lng.toString().padStart(12)
-  }
-
-  sunriseString() {
-    return this.data.sunrise.toUTCString()
+    return handleResponse
   }
 }
 

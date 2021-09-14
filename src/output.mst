@@ -13,19 +13,20 @@
         overflow: hidden;
       }
       h1 {
-      font-size: xx-large;
+      font-size: xxx-large;
       }
       h2 {
-      font-size: x-large;
+      font-size: xx-large;
       }
       h1, h2 {
         font-variant: small-caps;
       }
       #dataset {
-        max-height: 60vh;
+        max-height: 50vh;
         overflow-y: auto;
       }
       #dataset table {
+        width: 100%;
         border: solid 1px black;
       }
       #dataset tr:nth-child(odd) {
@@ -40,12 +41,17 @@
         text-align: left;
         padding: 5px;
       }
+      #disclaimer {
+        position: fixed;
+        bottom: 0;
+      }
     </style>
   </head>
 
   <body>
     <h1>sunnyt</h1>
-    <p>Find the earliest sunrise from a set of <b>{{datasize}}</b> random coordinates around the world!</p>
+    <p>Find the earliest sunrise from a set of <b>{{datasize}}</b> random coordinates around the
+    world!</p>
 
     {{#earliest}}
     <h2>Earliest</h2>
@@ -79,6 +85,11 @@
           </tr>
         {{/data}}</tbody>
       </table>
+      <p><small>If the <b>sunrise</b> time of a location is in the year <i>1970</i> it means that those
+      coordinates are not supported by the API used to fetch data. This usually means the coordinates
+      point to the middle of nowhere too.</small></p>
     </section>
+
+    <p id="disclaimer">Results provided by <a href="https://sunrise-sunset.org/">sunrise-sunset.org/</a></p>
   </body>
 </html>
