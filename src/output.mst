@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{ .Title }}</title>
+    <meta name="author" content="Alex Collins" />
+    <meta name="description" content="Find the earliest sunrise from a random set of coordinates" />
+    <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0" />
+    <style>
+      html {
+        font-family: "arial", sans-serif;
+        margin: 1em;
+        overflow: hidden;
+      }
+      h1 {
+      font-size: xx-large;
+      }
+      h2 {
+      font-size: x-large;
+      }
+      h1, h2 {
+        font-variant: small-caps;
+      }
+      #dataset {
+        max-height: 60vh;
+        overflow-y: auto;
+      }
+      #dataset table {
+        border: solid 1px black;
+      }
+      #dataset tr:nth-child(odd) {
+        border-top: solid 1px black;
+        border-bottom: solid 1px black;
+        background-color: #ccc;
+      }
+      #dataset tbody tr:hover {
+        background-color: #999
+      }
+      #dataset th, td {
+        text-align: left;
+        padding: 5px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>sunnyt</h1>
+    <p>Find the earliest sunrise from a set of <b>{{datasize}}</b> random coordinates around the world!</p>
+
+    {{#earliest}}
+    <h2>Earliest</h2>
+    <table>
+      <b>ID:</b> {{id}}<br/>
+      <b>Coordinates:</b> {{lat}},{{lng}}<br/>
+      <b>Sunrise time:</b> {{sunrise}}<br/>
+      <b>Day Length:</b> {{daylen}}
+    </table>
+    {{/earliest}}
+
+    <h2>Dataset</h2>
+    <section id="dataset">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Longitude</th>
+            <th>Latitude</th>
+            <th>Sunrise</th>
+            <th>Day Length</th>
+          </tr>
+        </thead>
+        <tbody>{{#data}}
+          <tr>
+            <td>{{id}}</td>
+            <td>{{lat}}</td>
+            <td>{{lng}}</td>
+            <td>{{sunrise}}</td>
+            <td>{{daylen}}</td>
+          </tr>
+        {{/data}}</tbody>
+      </table>
+    </section>
+  </body>
+</html>
